@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.aviation.customer.vo.Customer" table="customer">
+		<id name="cid">
+			<generator class="native"/>
+		</id>
+		
+		<property name="cname"/>
+		<property name="cpassword"/>
+		<property name="sex"/>
+		<property name="name"/>
+		<property name="idcard"/>
+		<property name="phone"/>
+		<property name="sign"/>
+		
+		<set name="orders" inverse="true">
+			<key column="cid"/>
+			<one-to-many class="com.aviation.order.vo.Order"/>
+		</set>
+	</class>
+</hibernate-mapping>

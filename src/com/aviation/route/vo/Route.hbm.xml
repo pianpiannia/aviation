@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.aviation.route.vo.Route" table="route">
+		<id name="rid">
+			<generator class="native"/>
+		</id>
+		
+		<property name="start_city"/>
+		<property name="arrival_city"/>
+		<property name="flight_date"/>
+		<property name="start_time"/>
+		<property name="arrival_time"/>
+		<property name="first_price"/>
+		<property name="tourist_price"/>
+		<property name="business_price"/>
+		<property name="captain"/>
+		<property name="maintenance_people"/>
+		<property name="terminal_building"/>
+		<property name="boarding_port"/>
+		<property name="remark"/>
+		<many-to-one name="aircraft" lazy="false" class="com.aviation.aircraft.vo.Aircraft" column="aid"></many-to-one>
+		<set name="orders" cascade="save-update">
+			<key column="rid"/>
+			<one-to-many class="com.aviation.order.vo.Order"/>
+		</set>
+		<property name="first_number"/>
+		<property name="tourist_number"/>
+		<property name="business_number"/>
+	</class>
+</hibernate-mapping>

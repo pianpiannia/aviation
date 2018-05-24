@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.aviation.order.vo.Order" table="orders">
+		<id name="oid">
+			<generator class="native"/>
+		</id>
+		<property name="ordertime"/>
+		<!-- 订单与航线关系配置 -->
+		<many-to-one name="route" lazy="false" class="com.aviation.route.vo.Route" column="rid"/>
+		<property name="price"/>
+		<property name="cname"/>
+		<property name="idcard"/>
+		<!-- 订单与用户关系配置 -->
+		<!-- cascade="save-update,persist" -->
+		<many-to-one name="customer" lazy="false" class="com.aviation.customer.vo.Customer" column="cid"/>
+		<property name="state"/>
+	</class>
+</hibernate-mapping>

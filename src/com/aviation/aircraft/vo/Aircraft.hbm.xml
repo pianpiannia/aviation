@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping>
+	<class name="com.aviation.aircraft.vo.Aircraft" table="aircraft">
+		<id name="aid">
+			<generator class="native"/>
+		</id>
+		<property name="airline"/>
+		<property name="type"/>
+		<property name="purchaseTime"/>
+		<property name="serviceTime"/>
+		<property name="firstClass"/>
+		<property name="touristClass"/>
+		<property name="businessClass"/>
+		<property name="repair_time"/>
+		<property name="frequency"/>
+		<property name="remark"/>
+		<set name="routes"  lazy="false">
+			<key column="aid"/>
+			<one-to-many class="com.aviation.route.vo.Route"/>
+		</set>
+		
+	</class>
+</hibernate-mapping>

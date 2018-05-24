@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="false" />
+	<package name="aviation" extends="struts-default" namespace="/">
+	<global-results>
+		<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+		<result name="login">/WEB-INF/jsp/login.jsp</result>
+	</global-results>
+		<!-- 前台菜单功能action -->
+		<action name="index_*" class="indexAction" method="{1}">
+			<result name="index">/WEB-INF/jsp/index.jsp</result>
+			
+			<result name="ticketManage">/WEB-INF/jsp/ticketManage.jsp</result>
+			<result name="order">/WEB-INF/jsp/order.jsp</result>
+			<result name="myOrder">/WEB-INF/jsp/myOrder.jsp</result>
+			
+		</action>
+		<!-- 前台用户action -->
+		<action name="customer_*" class="customerAction" method="{1}">
+			<result name="registPage">/WEB-INF/jsp/regist.jsp</result>
+			<result name="registSuccess" type="redirectAction">index_index.action</result>
+			<!-- <result name="input">/WEB-INF/jsp/regist.jsp</result> -->
+			<result name="loginPage">/WEB-INF/jsp/login.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index_index.action</result>
+			<result name="quit" type="redirectAction">index_index.action</result>
+			<result name="checkcodeFail">/WEB-INF/jsp/regist.jsp</result>
+			<result name="toPersonalInfo">/WEB-INF/jsp/personalInfo.jsp</result>
+			<result name="toCompleteInfo">/WEB-INF/jsp/changeInfo.jsp</result>
+			<result name="editInfo" type="redirectAction">customer_toPersonalInfo.action</result>
+			<result name="toPasswordInfo">/WEB-INF/jsp/changePassword.jsp</result>
+			<result name="editInfoSuccess">/WEB-INF/jsp/personalInfo.jsp</result>
+			
+		
+		</action>
+		<!-- 验证码action -->
+		<action name="checkImg" class="checkImgAction"></action>
+	 	<!-- 前台航线action -->
+	 	<action name="route_*" class="routeAction" method="{1}">
+	 		<result name="findAll">/WEB-INF/jsp/flightManage.jsp</result>
+	 		<result name="findByRid">/WEB-INF/jsp/routeitem.jsp</result>
+	 		<result name="findMoreCondition">/WEB-INF/jsp/flightQuery.jsp</result>
+	 		<result name="toOrderPage">/WEB-INF/jsp/order.jsp</result>
+	 	</action>
+	 	<!-- 订单action -->
+	 	<action name="order_*" class="orderAction" method="{1}">
+	 		<result name="toMyOrder">/WEB-INF/jsp/myOrder.jsp</result>
+	 		<result name="saveOrder">/WEB-INF/jsp/msg2.jsp</result>
+	 		<result name="updateOrderSuccess" type="redirectAction">order_toMyOrder.action?page=1</result>
+	 		<result name="toOrderPage" type="redirectAction">index_index.action</result>
+	 		<result name="cancelOrder" type="redirectAction">order_toMyOrder.action?page=1</result>
+	 	</action>
+	 	<!-- 后台客户管理action -->
+	 	<action name="adminCustomer_*" class="adminCustomerAction" method="{1}">
+	 		<result name="findAll">/admin/adminCustomer/list.jsp</result>
+	 		<result name="editSuccess">/admin/adminCustomer/edit.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminCustomer_findAll.action</result>	
+			<result name="saveSuccess" type="redirectAction">adminCustomer_findAll.action</result>
+			<result name="deleteSuccess" type="redirectAction">adminCustomer_findAll.action</result>
+	 	</action>
+	 	<!-- 后台登陆管理员action -->
+		<action name="adminUser_*" class="adminUserAction" method="{1}">
+			<result name="login">/admin/index.jsp</result>
+			<result name="loginFail">/admin/index.jsp</result>
+			<result name="loginSuccess" type="redirect">/admin/home.jsp</result>
+			<result name="exit">/admin/index.jsp</result>
+			<result name="findAll">/admin/adminUser/list.jsp</result>	
+			<result name="editSuccess">/admin/adminUser/edit.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminUser_findAll.action</result>	
+			<result name="saveSuccess" type="redirectAction">adminUser_findAll.action</result>
+			<result name="deleteSuccess" type="redirectAction">adminUser_findAll.action</result>
+			
+		</action>
+		<!-- 后台航线管理action -->
+		<action name="adminRoute_*" class="adminRouteAction" method="{1}">
+			<result name="findAll">/admin/route/list.jsp</result>
+			<result name="toAddPage">/admin/route/add.jsp</result>
+			<!-- <result name="toAddPageAgain" type="redirectAction">adminRoute_toAddPage.action</result> -->
+			<result name="editSuccess">/admin/route/edit.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminRoute_findAll.action</result>
+			<result name="deleteSuccess" type="redirectAction">adminRoute_findAll.action</result>
+			<result name="saveSuccess" type="redirectAction">adminRoute_findAll.action</result>
+		</action>
+		<!-- 后台客机管理action -->
+		<action name="adminAircraft_*" class="adminAircraftAction" method="{1}">
+			<result name="findAll">/admin/aircraft/list.jsp</result>
+			<result name="saveSuccess" type="redirectAction">adminAircraft_findAll.action</result>
+			<result name="deleteSuccess" type="redirectAction">adminAircraft_findAll.action</result>
+			<result name="editSuccess">/admin/aircraft/edit.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminAircraft_findAll.action</result>
+		</action>
+		
+		<!-- 后台订单管理action -->
+		<action name="adminOrder_*" class="adminOrderAction" method="{1}">
+			<result name="findAll">/admin/order/list.jsp</result>
+			<result name="findOrderByOid">/admin/order/orderitem.jsp</result>
+			<result name="deleteSuccess" type="redirectAction">adminOrder_findAll.action?page=1</result>
+		</action>
+	</package>
+</struts>

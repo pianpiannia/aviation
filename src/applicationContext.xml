@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 配置连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///aviation"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="mysqladmin"></property>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 因为hibernate核心配置文件中，没有数据库配置，数据库配置在spring里面配置，注入dataSource -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 配置hibernate基本信息 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			</props>
+		</property>
+		<!-- 配置hibernate的映射文件 -->
+		<property name="mappingResources">
+			<list>
+				<value>com/aviation/adminuser/vo/AdminUser.hbm.xml</value>
+				<value>com/aviation/customer/vo/Customer.hbm.xml</value>
+				<value>com/aviation/aircraft/vo/Aircraft.hbm.xml</value>
+				<value>com/aviation/route/vo/Route.hbm.xml</value>
+				<value>com/aviation/order/vo/Order.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	<!-- 事务管理 -->
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<!-- 注入sessionFactory,因为里面包含dataSource -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 开启注解事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+ 	
+	<!-- Action的配置=========================
+	首页访问action -->
+	 <bean id="indexAction" class="com.aviation.index.action.IndexAction" scope="prototype">
+	</bean>
+	<!-- 验证码action -->
+	<bean id="checkImgAction" class="com.aviation.customer.action.CheckImgAction" scope="prototype"></bean>
+
+	<!-- 用户模块action -->
+	<bean id="customerAction" class="com.aviation.customer.action.CustomerAction" scope="prototype">
+		<property name="customerService" ref="customerService"></property>
+	</bean>
+	<!-- 航线模块action -->
+	<bean id="routeAction" class="com.aviation.route.action.RouteAction" scope="prototype">
+		<property name="routeService" ref="routeService"></property>
+		
+	</bean>
+	<!-- 订单action -->
+	<bean id="orderAction" class="com.aviation.order.action.OrderAction" scope="prototype">
+		<property name="orderService" ref="orderService"></property>
+		<property name="routeService" ref="routeService"></property>
+	</bean>
+	<!-- 后台用户 -->
+	<bean id="adminCustomerAction" class="com.aviation.customer.adminaction.CustomerAdminAction" scope="prototype">
+		<property name="customerService" ref="customerService"></property>
+	</bean>
+	<!-- 后台登陆 -->
+	<bean id="adminUserAction" class="com.aviation.adminuser.action.AdminUserAction" scope="prototype">
+		<property name="adminUserService" ref="adminUserService"></property>
+	</bean>
+	
+	<!-- 后台航线信息管理 -->
+	<bean id="adminRouteAction" class="com.aviation.route.adminaction.AdminRouteAction" scope="prototype">
+		<property name="routeService" ref="routeService"></property>
+		<property name="aircraftService" ref="aircraftService"></property>
+	</bean>
+	<!-- 后台客机信息管理 -->
+	<bean id="adminAircraftAction" class="com.aviation.aircraft.adminaction.AdminAircraftAction" scope="prototype">
+		<property name="aircraftService" ref="aircraftService"></property>
+	</bean>
+	
+	<!-- 后台订单信息管理 -->
+	<bean id="adminOrderAction" class="com.aviation.order.adminaction.AdminOrderAction" scope="prototype">
+		<property name="orderService" ref="orderService"></property>
+	</bean>
+	
+	<!-- Service配置==========================
+	 -->
+	 <!-- 用户 -->
+	 <bean id="customerService" class="com.aviation.customer.service.CustomerService">
+	 	<property name="customerDao" ref="customerDao"></property>
+	 </bean>
+	 <!-- 后台登陆 -->
+	 <bean id="adminUserService" class="com.aviation.adminuser.service.AdminUserService">
+		<property name="adminUserDao" ref="adminUserDao"></property>
+	</bean>
+	<!-- 前后台航线service -->
+	<bean id="routeService" class="com.aviation.route.service.RouteService">
+		<property name="routeDao" ref="routeDao"></property>
+	</bean>
+	<!-- 订单service -->
+	<bean id="orderService" class="com.aviation.order.service.OrderService">
+		<property name="orderDao" ref="orderDao"></property>
+	</bean>
+	<!-- 后台客机service -->
+	<bean id="aircraftService" class="com.aviation.aircraft.service.AircraftService">
+		<property name="aircraftDao" ref="aircraftDao"></property>
+	</bean>
+	
+	<!-- DAO配置==========================
+	 -->
+	 <!-- 用户dao -->
+	 <bean id="customerDao" class="com.aviation.customer.dao.CustomerDao">
+	 	<property name="sessionFactory" ref="sessionFactory"></property>
+	 </bean>
+	 <!-- 后台登陆dao -->
+	 <bean id="adminUserDao" class="com.aviation.adminuser.dao.AdminUserDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 后台航线dao -->
+	<bean id="routeDao" class="com.aviation.route.dao.RouteDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 订单dao -->
+	<bean id="orderDao" class="com.aviation.order.dao.OrderDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 后台客机dao -->
+	<bean id="aircraftDao" class="com.aviation.aircraft.dao.AircraftDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+</beans>
