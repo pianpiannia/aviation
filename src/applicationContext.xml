@@ -17,9 +17,9 @@
 	<!-- 配置连接池 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
-		<property name="jdbcUrl" value="jdbc:mysql://129.28.152.193/aviation"></property>
-		<property name="user" value="mysql"></property>
-		<property name="password" value="979598595"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///xxx"></property>
+		<property name="user" value="xxxx"></property>
+		<property name="password" value="xxxx"></property>
 	</bean>
 	
 	<bean id="sessionFactory"
